@@ -1,0 +1,101 @@
+/* إعادة تهيئة */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #2f3136;
+  color: #fff;
+  display: flex;
+  height: 100vh;
+}
+
+/* الشريط الجانبي */
+.sidebar {
+  width: 250px;
+  background-color: #202225;
+  padding: 20px;
+  border-right: 1px solid #36393f;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.call-buttons {
+  margin-top: 20px;
+}
+
+.call-buttons button {
+  background-color: #5865f2;
+  border: none;
+  padding: 10px;
+  color: white;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.call-buttons button:hover {
+  background-color: #4752c4;
+}
+
+/* محتوى المحادثة */
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* رسالة */
+.message {
+  margin-bottom: 10px;
+}
+
+.message strong {
+  color: #57f287;
+}
+
+/* إدخال الرسائل */
+.input-area {
+  display: flex;
+  padding: 10px;
+  background-color: #40444b;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  background-color: #2f3136;
+  color: white;
+}
+
+.input-area button {
+  padding: 10px 15px;
+  background-color: #7289da;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.input-area button:hover {
+  background-color: #5b6eae;
+}
