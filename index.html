@@ -1,123 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ChatZone</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #2f3136;
-      color: #fff;
-      display: flex;
-      height: 100vh;
-    }
-    .sidebar {
-      width: 250px;
-      background-color: #202225;
-      padding: 20px;
-      border-right: 1px solid #36393f;
-    }
-    .sidebar h2 {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .messages {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    .input-area {
-      display: flex;
-      padding: 10px;
-      background-color: #40444b;
-    }
-    .input-area input {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      margin-right: 10px;
-      background-color: #2f3136;
-      color: white;
-    }
-    .input-area button {
-      padding: 10px 15px;
-      background-color: #7289da;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-    }
-    .message {
-      margin-bottom: 10px;
-    }
-    .message strong {
-      color: #57f287;
-    }
-    .call-buttons {
-      margin-top: 20px;
-    }
-    .call-buttons button {
-      background-color: #5865f2;
-      border: none;
-      padding: 10px;
-      color: white;
-      border-radius: 5px;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-  </style>
+  <title>منصة الدردشة</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="sidebar">
     <h2>💬 ChatZone</h2>
+
+    <!-- أزرار السيرفر -->
+    <button onclick="createServer()">➕ إنشاء سيرفر</button>
+    <button onclick="window.location.href='discovery.html'">🔍 Discovery</button>
+    <hr style="margin: 10px 0; border-color: #444;">
+    <div id="serverList"></div>
+
+    <!-- أزرار الاتصال -->
     <div class="call-buttons">
       <button onclick="startCall()">📞 صوت</button>
       <button onclick="startVideo()">🎥 فيديو</button>
     </div>
   </div>
+
   <div class="chat-container">
-    <div class="messages" id="messages"></div>
+    <div class="messages" id="messages">
+      <p>👈 اختر سيرفر أو أنشئ واحدًا لبدء الدردشة!</p>
+    </div>
     <div class="input-area">
-      <input type="text" id="messageInput" placeholder="أكتب رسالة...">
-      <button onclick="sendMessage()">إرسال</button>
+      <input type="text" id="messageInput" placeholder="أكتب رسالة..." disabled>
+      <button onclick="sendMessage()" disabled>إرسال</button>
     </div>
   </div>
 
-  <script>
-    const messages = document.getElementById("messages");
-    const input = document.getElementById("messageInput");
-
-    function sendMessage() {
-      const text = input.value.trim();
-      if (text !== "") {
-        const div = document.createElement("div");
-        div.className = "message";
-        div.innerHTML = `<strong>أنت:</strong> ${text}`;
-        messages.appendChild(div);
-        input.value = "";
-        messages.scrollTop = messages.scrollHeight;
-      }
-    }
-
-    function startCall() {
-      alert("📞 ميزة المكالمات الصوتية ستُضاف لاحقًا (WebRTC)");
-    }
-
-    function startVideo() {
-      alert("🎥 ميزة مكالمات الفيديو ستُضاف لاحقًا (WebRTC)");
-    }
-
-    input.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
