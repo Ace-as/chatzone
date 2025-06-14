@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -10,14 +10,25 @@
   <div class="sidebar">
     <h2>💬 ChatZone</h2>
 
-    <!-- أزرار السيرفر -->
+    <!-- ✅ البروفايل -->
+    <div class="profile-box" onclick="editProfile()">
+      <img id="avatar" src="https://i.imgur.com/7k12EPD.png" alt="Avatar">
+      <div>
+        <strong id="nickname">مستخدم</strong>
+        <p style="font-size: 12px; color: #ccc;">اضغط لتعديل</p>
+      </div>
+    </div>
+
+    <hr style="margin: 10px 0; border-color: #444;">
+
+    <!-- ✅ أزرار السيرفر -->
     <button onclick="createServer()">➕ إنشاء سيرفر</button>
     <button onclick="window.location.href='discovery.html'">🔍 Discovery</button>
-    <hr style="margin: 10px 0; border-color: #444;">
-    <div id="serverList"></div>
 
-    <!-- أزرار الاتصال -->
-    <div class="call-buttons">
+    <div id="serverList" style="margin-top: 10px;"></div>
+
+    <!-- ✅ أزرار الاتصال -->
+    <div class="call-buttons" style="margin-top: 20px;">
       <button onclick="startCall()">📞 صوت</button>
       <button onclick="startVideo()">🎥 فيديو</button>
     </div>
@@ -25,7 +36,7 @@
 
   <div class="chat-container">
     <div class="messages" id="messages">
-      <p>👈 اختر سيرفر أو أنشئ واحدًا لبدء الدردشة!</p>
+      <p>👈 اختر سيرفر من القائمة الجانبية أو أنشئ واحدًا!</p>
     </div>
     <div class="input-area">
       <input type="text" id="messageInput" placeholder="أكتب رسالة..." disabled>
