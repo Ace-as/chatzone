@@ -1,82 +1,134 @@
-const messages = document.getElementById("messages");
-const input = document.getElementById("messageInput");
-const sendBtn = document.querySelector(".input-area button");
-const serverList = document.getElementById("serverList");
+// بيانات المستخدم
+function loadProfile() {
+  const avatar = localStorage.getItem("avatar") || "https://i.imgur.com/7k12EPD.png";
+  const nickname = localStorage.getItem("nickname") || "مستخدم";
 
-let servers = JSON.parse(localStorage.getItem("servers")) || [];
+  document.getElementById("avatar").src = avatar;
+  document.getElementById("nickname").textContent = nickname;
+}
+
+function editProfile() {
+  const newNick = prompt("📝 أدخل اسمك:");
+  const newAvatar = prompt("🖼️ أدخل رابط صورة:");
+
+  if (newNick) localStorage.setItem("nickname", newNick);
+  if (newAvatar) localStorage.setItem("avatar", newAvatar);
+
+  loadProfile();
+}
+
+loadProfile();
+
+// === إدارة السيرفرات والقنوات ===
+
+let servers = JSON.parse(localStorage.getItem("servers")) || {};
 let currentServer = null;
+let currentChannel = null;
 
-// تحديث عرض السيرفرات
-function updateServerList() {
-  serverList.innerHTML = "";
-  servers.forEach((server, index) => {
-    const btn = document.createElement("button");
-    btn.textContent = server.name;
-    btn.onclick = () => selectServer(index);
-    serverList.appendChild(btn);
-  });
+// إنشاء سيرفر
+function createServer() {
+  const name = prompt("📦 اسم السيرفر؟");
+  if (!name) return;
+
+  const id = "srv_" + Date.now();
+  servers[id] = {
+    name,
+    channels: {
+      gen: {
+        name: "عام",
+        messages: []
+      }
+    }
+  };
+  localStorage.setItem("servers", JSON.stringify(servers));
+  renderServers();
+}
+
+// عرض السيرفرات
+function renderServers() {
+  const container = document.getElementById("servers");
+  container.innerHTML = "";
+
+  for (const id in servers) {
+    const icon = document.createElement("div");
+    icon.className = "server-icon";
+    icon.textContent = servers[id].name[0].toUpperCase();
+    icon.onclick = () => selectServer(id);
+    container.appendChild(icon);
+  }
 }
 
 // اختيار سيرفر
-function selectServer(index) {
-  currentServer = servers[index];
-  messages.innerHTML = "";
+function selectServer(id) {
+  currentServer = id;
+  currentChannel = null;
+  document.getElementById("serverName").textContent = servers[id].name;
+  renderChannels(id);
+  document.getElementById("messages").innerHTML = `<p style="text-align:center;color:#999">اختر قناة</p>`;
+  disableInput(true);
+}
 
-  currentServer.messages.forEach((msg) => {
-    const div = document.createElement("div");
-    div.className = "message";
-    div.innerHTML = `<strong>أنت:</strong> ${msg}`;
-    messages.appendChild(div);
-  });
+// عرض قنوات
+function renderChannels(id) {
+  const container = document.getElementById("channels");
+  container.innerHTML = "";
 
-  input.disabled = false;
-  sendBtn.disabled = false;
-  input.focus();
+  const srv = servers[id];
+  for (const ch in srv.channels) {
+    const btn = document.createElement("button");
+    btn.textContent = "#" + srv.channels[ch].name;
+    btn.onclick = () => selectChannel(ch);
+    container.appendChild(btn);
+  }
+}
+
+// اختيار قناة
+function selectChannel(channelId) {
+  currentChannel = channelId;
+  document.getElementById("channelTitle").textContent = "#" + servers[currentServer].channels[channelId].name;
+  renderMessages();
+  disableInput(false);
 }
 
 // إرسال رسالة
 function sendMessage() {
-  const text = input.value.trim();
-  if (!text || !currentServer) return;
+  const input = document.getElementById("messageInput");
+  const content = input.value.trim();
+  if (!content || !currentServer || !currentChannel) return;
 
-  currentServer.messages.push(text);
+  const nickname = localStorage.getItem("nickname") || "مستخدم";
+
+  servers[currentServer].channels[currentChannel].messages.push({
+    user: nickname,
+    text: content,
+    time: new Date().toLocaleTimeString()
+  });
+
   localStorage.setItem("servers", JSON.stringify(servers));
-
-  const div = document.createElement("div");
-  div.className = "message";
-  div.innerHTML = `<strong>أنت:</strong> ${text}`;
-  messages.appendChild(div);
-
   input.value = "";
-  messages.scrollTop = messages.scrollHeight;
+  renderMessages();
 }
 
-// إنشاء سيرفر جديد
-function createServer() {
-  const name = prompt("🧠 أدخل اسم السيرفر:");
-  if (!name) return;
+// عرض الرسائل
+function renderMessages() {
+  const msgBox = document.getElementById("messages");
+  const messages = servers[currentServer].channels[currentChannel].messages;
 
-  const isVerified = confirm("✅ هل تريد توثيق هذا السيرفر في Discovery؟");
+  msgBox.innerHTML = "";
+  messages.forEach(msg => {
+    const el = document.createElement("div");
+    el.className = "message";
+    el.innerHTML = `<strong>${msg.user}</strong> <small style="color:gray">${msg.time}</small><br>${msg.text}`;
+    msgBox.appendChild(el);
+  });
 
-  const newServer = {
-    name: name,
-    messages: [],
-    verified: isVerified,
-  };
-
-  servers.push(newServer);
-  localStorage.setItem("servers", JSON.stringify(servers));
-  updateServerList();
+  msgBox.scrollTop = msgBox.scrollHeight;
 }
 
-// أزرار الاتصال
-function startCall() {
-  alert("📞 ميزة المكالمات الصوتية ستُضاف لاحقًا (WebRTC)");
+function disableInput(state) {
+  document.getElementById("messageInput").disabled = state;
+  document.querySelector(".input-area button").disabled = state;
 }
 
-function startVideo() {
-  alert("🎥 ميزة مكالمات الفيديو ستُضاف لاحقًا (WebRTC)");
-}
-
-// تحميل السيرفرات
-updateServerList();
+// عند بداية الصفحة
+renderServers();
