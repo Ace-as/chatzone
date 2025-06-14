@@ -1,41 +1,51 @@
-<!-- داخل layout -->
-<div class="layout">
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ChatZone - Discord Style</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    
+    <!-- ✅ شريط السيرفرات -->
+    <div class="server-bar">
+      <div class="server-icon home">🏠</div>
+      <div class="divider"></div>
+      <div id="servers"></div>
+      <div class="server-icon" onclick="createServer()">➕</div>
+      <div class="server-icon" onclick="window.location.href='discovery.html'">🧭</div>
+    </div>
 
-  <!-- شريط السيرفرات -->
-  <div class="server-bar">
-    <!-- كما هو سابقاً -->
-  </div>
+    <!-- ✅ قائمة القنوات -->
+    <div class="channel-bar">
+      <h3 id="serverName">لا يوجد سيرفر</h3>
+      <div id="channels"></div>
+    </div>
 
-  <!-- عمود القنوات -->
-  <div class="channel-bar">
-    <h3 id="serverName">لا يوجد سيرفر</h3>
-    <div id="channels"></div>
-    <button onclick="createChannel()" class="create-channel">➕ قناة جديدة</button>
-  </div>
+    <!-- ✅ الدردشة -->
+    <div class="chat-area">
+      <div class="chat-header" id="channelTitle">اختر قناة للبدء</div>
+      <div class="messages" id="messages">
+        <p style="text-align: center; color: gray;">لا توجد رسائل بعد</p>
+      </div>
+      <div class="input-area">
+        <input type="text" id="messageInput" placeholder="أكتب رسالة..." disabled>
+        <button onclick="sendMessage()" disabled>إرسال</button>
+      </div>
+    </div>
 
-  <!-- منطقة الدردشة -->
-  <div class="chat-area">
-    <div class="chat-header" id="channelTitle">اختر قناة للبدء</div>
-    <div class="messages" id="messages"></div>
-    <div class="input-area">
-      <input type="text" id="messageInput" placeholder="أكتب رسالة..." disabled>
-      <button onclick="sendMessage()" disabled>إرسال</button>
+    <!-- ✅ البروفايل -->
+    <div class="profile-bar" onclick="editProfile()">
+      <img id="avatar" src="https://i.imgur.com/7k12EPD.png" alt="avatar">
+      <div class="profile-info">
+        <strong id="nickname">مستخدم</strong>
+        <small>اضغط للتعديل</small>
+      </div>
     </div>
   </div>
 
-  <!-- ✅ قائمة الأعضاء -->
-  <div class="member-bar" id="members">
-    <h4>الأعضاء</h4>
-    <div id="memberList"></div>
-  </div>
-
-  <!-- بروفايل المستخدم -->
-  <div class="profile-bar" onclick="editProfile()">
-    <img id="avatar" src="https://i.imgur.com/7k12EPD.png" alt="avatar">
-    <div class="profile-info">
-      <strong id="nickname">مستخدم</strong>
-      <small>اضغط للتعديل</small>
-    </div>
-  </div>
-
-</div>
+  <script src="app.js"></script>
+</body>
+</html>
